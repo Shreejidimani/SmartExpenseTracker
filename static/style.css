@@ -1,0 +1,32 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+header {
+    margin-bottom: 20px;
+}
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+.cta-section {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 15px;
+}
+.table th, .table td {
+    vertical-align: middle;
+}
+.card-title {
+    font-weight: 600;
+}
+
+.btn {
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
