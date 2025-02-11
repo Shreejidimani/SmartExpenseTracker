@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Smart Expense Tracker{% endblock %}
+
+{% block content %}
+    <div class="home.jpg"></div> <!-- Background Image -->
+
+    <main>
+        <h1>Welcome to Smart Expense Tracker</h1>
+        <p>Track your expenses easily and efficiently.</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-get-started">Let's Get Started</a>
+    </main>
+{% endblock %}

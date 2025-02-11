@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold text-dark"><i class="fas fa-chart-line"></i> Dashboard</h2>
+
+    <div class="row g-4">
+        <!-- Total Expenses -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 text-white bg-gradient-danger">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold"><i class="fas fa-money-bill-wave"></i> Total Expenses</h5>
+                    <p class="display-5 fw-bold">₹{{ total_expenses }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 text-white bg-gradient-info">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold"><i class="fas fa-wallet"></i> Monthly Budget</h5>
+                    <p class="display-5 fw-bold">₹{{ budget_amount }}</p>
+                    <a href="{{ url_for('set_budget') }}" class="btn btn-light btn-sm mt-2 shadow-sm">Set Budget</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Savings -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 text-white bg-gradient-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold"><i class="fas fa-piggy-bank"></i> Savings</h5>
+                    <p class="display-5 fw-bold">₹{{ savings }}</p>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <!-- Buttons -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('add_expense') }}" class="btn btn-primary btn-lg me-3 shadow-sm">
+            <i class="fas fa-plus"></i> Add Expense
+        </a>
+        <a href="{{ url_for('export_expenses') }}" class="btn btn-success btn-lg shadow-sm">
+            <i class="fas fa-download"></i> Export CSV
+        </a>
+    </div>
+
+    <!-- Total Income Section -->
+    <div class="row mt-4">
+        <div class="col-md-4 mx-auto">
+            <div class="card shadow-lg border-0 text-white bg-gradient-warning">
+                <div class="card-body text-center">
+                    <h5 class="card-title"><i class="fas fa-hand-holding-usd"></i> Total Income</h5>
+                    <p class="display-6">₹{{ total_income }}</p>
+                    <a href="{{ url_for('add_income') }}" class="btn btn-light mt-2">Add Income</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h4 class="card-title text-dark fw-bold">
+                        <i class="fas fa-history"></i> Recent Transactions
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead class="bg-primary text-light">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for expense in expenses %}
+                                <tr>
+                                    <td>{{ expense.date.strftime('%Y-%m-%d') if expense.date else 'N/A' }}</td>
+                                    <td>{{ expense.description if expense.description else 'N/A' }}</td>
+                                    <td class="fw-bold text-danger">₹{{ expense.amount if expense.amount else '0' }}</td>
+                                    <td>
+                                        <a href="{{ url_for('edit_expense', expense_id=expense.id) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <form action="{{ url_for('delete_expense', expense_id=expense.id) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No recent transactions found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <!-- Expense Breakdown Pie Chart -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-chart-pie"></i> Expense Breakdown</h5>
+                    <canvas id="expensePieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Monthly Spending Trend Line Chart -->
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-chart-line"></i> Monthly Spending Trend</h5>
+                    <canvas id="spendingTrendChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Budget vs. Expenses Bar Chart -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-chart-bar"></i> Budget vs. Expenses</h5>
+                    <canvas id="budgetVsExpenseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ <!-- Recent Income Section -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-money-check-alt"></i> Recent Income</h5>
+                <table class="table table-hover table-bordered">
+                    <thead class="bg-warning text-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Source</th>
+                            <th>Amount</th>
+                            <th>Actions</th>  <!-- ✅ New Column for Actions -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for income in recent_incomes %}
+                        <tr>
+                            <td>{{ income.date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ income.source }}</td>
+                            <td class="fw-bold text-success">₹{{ income.amount }}</td>
+                            <td>
+                                <!-- Edit Button -->
+                                <a href="{{ url_for('edit_income', income_id=income.id) }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+
+                                <!-- Delete Button (Form for POST request) -->
+                                <form action="{{ url_for('delete_income', income_id=income.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No income records found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Custom Styling -->
+    <style>
+        .bg-gradient-danger {
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+        }
+        .bg-gradient-info {
+            background: linear-gradient(135deg, #2b5876, #4e4376);
+        }
+        .bg-gradient-success {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+        .bg-gradient-warning {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .shadow-sm {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+    </style>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Expense Breakdown Pie Chart
+    var ctx1 = document.getElementById("expensePieChart").getContext("2d");
+    var expensePieChart = new Chart(ctx1, {
+        type: "doughnut",
+        data: {
+            labels: {{ category_labels|tojson }},
+            datasets: [{
+                data: {{ category_amounts|tojson }},
+                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50", "#9C27B0"]
+            }]
+        }
+    });
+
+    // Monthly Spending Trend Line Chart
+    var ctx2 = document.getElementById("spendingTrendChart").getContext("2d");
+    var spendingTrendChart = new Chart(ctx2, {
+        type: "line",
+        data: {
+            labels: {{ month_labels|tojson }},
+            datasets: [{
+                label: "Monthly Spending",
+                data: {{ month_amounts|tojson }},
+                borderColor: "#FF6384",
+                backgroundColor: "rgba(255,99,132,0.2)",
+                borderWidth: 2,
+                fill: true
+            }]
+        }
+    });
+
+    // Budget vs. Expenses Bar Chart
+    var ctx3 = document.getElementById("budgetVsExpenseChart").getContext("2d");
+    var budgetVsExpenseChart = new Chart(ctx3, {
+        type: "bar",
+        data: {
+            labels: ["Budget", "Total Expenses", "Savings"],
+            datasets: [{
+                label: "Amount (₹)",
+                data: [{{ budget_amount }}, {{ total_expenses }}, {{ savings }}],
+                backgroundColor: ["#36A2EB", "#FF6384", "#4CAF50"]
+            }]
+        }
+    });
+</script>
+
+{% endblock %}
+

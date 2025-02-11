@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Edit Income</h2>
+    
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Amount</label>
+            <input type="number" name="amount" class="form-control" value="{{ income.amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Source</label>
+            <input type="text" name="source" class="form-control" value="{{ income.source }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" name="date" class="form-control" value="{{ income.date.strftime('%Y-%m-%d') }}" required>
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Income</button>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

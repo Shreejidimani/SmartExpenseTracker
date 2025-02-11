@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add Income</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="amount" class="form-label">Income Amount</label>
+            <input type="number" class="form-control" name="amount" required>
+        </div>
+        <div class="mb-3">
+            <label for="source" class="form-label">Source</label>
+            <input type="text" class="form-control" name="source" required>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" name="date" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Income</button>
+    </form>
+</div>
+{% endblock %}

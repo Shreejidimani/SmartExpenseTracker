@@ -1,0 +1,174 @@
+/* Set global styles */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #ffffff; /* White background */
+    color: black;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Background Image */
+.background-image {
+    background-image: url('/static/images/home.jpg');
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1;
+    text-align: center;
+}
+
+/* Navbar Styling */
+.navbar {
+    background: rgba(0, 123, 255, 0.9); /* Slightly transparent blue */
+    padding: 5px 0;  /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;  /* Keep it fixed on top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* Navbar Brand */
+.navbar-brand {
+    font-size: 26px;  /* Smaller font size */
+    font-weight: 600;
+    color: white;
+    transition: 0.3s;
+}
+
+.navbar-brand:hover {
+    color: #e3f2fd;
+    transform: scale(1.05);
+}
+
+/* Navbar Links */
+.navbar-nav .nav-link {
+    font-size: 18px;  /* Reduced font size */
+    margin-right: 8px;
+    color: white;
+    transition: 0.3s;
+    padding: 5px 8px; /* Reduced padding */
+    border-radius: 6px;
+}
+
+.navbar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.02);
+}
+
+/* Navbar Buttons */
+.navbar-nav .btn {
+    font-size: 18px;  /* Reduced font size */
+    padding: 5px 10px; /* Adjusted padding */
+    transition: 0.3s ease;
+}
+
+.navbar-nav .btn-outline-light:hover {
+    background: white;
+    color: #007bff;
+    transform: scale(1.03);
+}
+
+/* Adjust Content Padding */
+.container {
+    padding-top: 55px;  /* Adjusted for smaller navbar */
+}
+
+
+/* Responsive Navbar */
+@media (max-width: 992px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .navbar-nav .nav-link {
+        margin-bottom: 10px;
+    }
+}
+
+/* Footer styles */
+footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Button styles */
+.btn-get-started {
+    margin-top: 20px;
+}
+
+
+
+/* Login & Register Card Styling */
+.login-card, .register-card {
+    width: 400px;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    margin-top: 100px; /* Space below navbar */
+}
+
+/* Input Fields */
+.input-lg {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+/* Button Styling */
+.btn-primary {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Links */
+.text-muted:hover {
+    color: #0056b3;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+}
