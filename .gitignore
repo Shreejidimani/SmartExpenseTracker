@@ -1,0 +1,22 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.env
+
+# Database and migrations
+*.sqlite3
+instance/
+migrations/
+
+# Logs and temp files
+*.log
+*.csv
+
+# VSCode and OS files
+.vscode/
+.DS_Store
